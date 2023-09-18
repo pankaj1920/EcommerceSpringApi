@@ -16,34 +16,38 @@ import java.util.Date;
 public class UserSchema {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name = "id", nullable = false)
      private int id;
-
     private String firstName;
     private String lastName;
     private Date dob;
+
+    @Column(name = "country_code", length = 5)
     private int countryCode;
 
-    @Column(length = 10,unique = true)
+    @Column(name = "mobile")
     private int mobile;
 
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
-    @Column(unique = true)
+    @Column(name = "email")
     private String email;
 
     private String password;
     private String otp;
     private String profileImage;
-    @Column(columnDefinition = "VARCHAR(5) DEFAULT 'en'")
+
+    @Column(name = "language",columnDefinition = "VARCHAR(5) DEFAULT 'en'")
     private String language = "en";
 
-    @Column(updatable = false)
+    @Column(name = "created_at",updatable = false)
     private Date createdAt;
 
     private Date updatedAt;
 
     @OneToOne(mappedBy = "user",cascade = CascadeType.ALL)
+    @JoinColumn(referencedColumnName = "id")
     private ApiStatus apiStatus;
 
 

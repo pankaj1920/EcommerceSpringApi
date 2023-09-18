@@ -8,9 +8,14 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
 public class ErrorResponse extends ApiResponse {
-    private boolean status;
-    private String message;
+
+
+    public ErrorResponse(String msg,int statusCode) {
+        super(false,statusCode, msg);
+    }
+
+    public ErrorResponse(boolean status,String message,int statusCode) {
+        super(status, statusCode,message);
+    }
 }

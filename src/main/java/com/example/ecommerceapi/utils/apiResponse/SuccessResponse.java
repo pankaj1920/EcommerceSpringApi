@@ -11,8 +11,13 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SuccessResponse<T> extends ApiResponse {
-    public SuccessResponse(boolean status, String message, T data) {
-        super(status, message);
+    public SuccessResponse(String message, T data,int statusCode) {
+        super(true,statusCode, message);
+        this.data = data;
+    }
+
+    public SuccessResponse(boolean status, String message, T data,int statusCode) {
+        super(status,statusCode, message);
         this.data = data;
     }
 

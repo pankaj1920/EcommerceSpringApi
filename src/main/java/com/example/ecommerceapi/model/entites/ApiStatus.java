@@ -16,10 +16,10 @@ public class ApiStatus {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
 
-    @OneToOne
-    @JoinColumn(name = "user_id")
-    UserSchema user;
-
     @Column(columnDefinition = "boolean default true")
     private boolean status = true;
+
+    @OneToOne
+    @JoinColumn(name = "user_id" ,referencedColumnName = "id")
+    UserSchema user;
 }
