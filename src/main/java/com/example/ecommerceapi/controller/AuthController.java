@@ -5,9 +5,7 @@ import com.example.ecommerceapi.model.request.auth.CreateAccountRequest;
 import com.example.ecommerceapi.service.AuthService;
 import com.example.ecommerceapi.utils.apiResponse.ApiResponse;
 import com.example.ecommerceapi.utils.apiResponse.ResponseHandler;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,9 +17,13 @@ import static com.example.ecommerceapi.validation.auth.AuthValidation.isRegister
 @RestController
 @RequestMapping("api/auth/")
 public class AuthController {
+    AuthService authService;
 
     @Autowired
-    AuthService authService;
+    public AuthController(AuthService authService) {
+        this.authService = authService;
+    }
+
 
     @PostMapping("register")
     public ResponseEntity<ApiResponse> userRegister(
@@ -31,4 +33,6 @@ public class AuthController {
         ApiResponse createAccountResponse = authService.createAccount(createAccountRequest);
         return ResponseHandler.sendResponse(createAccountResponse);
     }
+
+
 }
