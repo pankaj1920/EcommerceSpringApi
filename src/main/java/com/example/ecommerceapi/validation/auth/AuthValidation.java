@@ -2,8 +2,7 @@ package com.example.ecommerceapi.validation.auth;
 
 import com.example.ecommerceapi.exception.ApiValidationException;
 import com.example.ecommerceapi.model.request.auth.CreateAccountRequest;
-import com.example.ecommerceapi.model.response.validation.ValidationError;
-import com.example.ecommerceapi.utils.Print;
+import com.example.ecommerceapi.model.request.auth.CreateProfileRequest;
 import com.example.ecommerceapi.utils.RegexPattern;
 
 import java.util.regex.Pattern;
@@ -25,6 +24,20 @@ public class AuthValidation {
             return true;
         }
 
+    }
+
+    public static Boolean isCreateProfileValid(CreateProfileRequest request) throws  ApiValidationException{
+        boolean isValidEmail = Pattern.compile(RegexPattern.Email).matcher(request.getEmail()).matches();
+
+        if (request.getFirstName().isEmpty()){
+            throw new ApiValidationException("First name cannot be empty");
+        }else if (request.getLastName().isEmpty()){
+            throw new ApiValidationException("Last name cannot be empty");
+        }else if (request.getDob().toString().isEmpty()){
+            throw new ApiValidationException("D.O.B cannot be empty");
+        }
+
+        return true;
     }
 
 

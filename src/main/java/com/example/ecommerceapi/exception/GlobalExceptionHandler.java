@@ -3,12 +3,14 @@ package com.example.ecommerceapi.exception;
 
 import com.example.ecommerceapi.model.request.auth.CreateAccountRequest;
 import com.example.ecommerceapi.model.response.validation.ValidationError;
+import com.example.ecommerceapi.utils.Print;
 import com.example.ecommerceapi.utils.apiResponse.ApiResponse;
 import com.example.ecommerceapi.utils.apiResponse.ErrorResponse;
 import com.example.ecommerceapi.utils.apiResponse.ResponseHandler;
 import com.example.ecommerceapi.utils.apiResponse.SuccessResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -42,6 +44,22 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ApiValidationException.class)
     public ResponseEntity<ApiResponse> handleCustomApiValidation(ApiValidationException exception) {
         ErrorResponse errorResponse = new ErrorResponse(exception.getErrorMessage(), HttpStatus.BAD_REQUEST.value());
+        return ResponseHandler.sendResponse(errorResponse);
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ApiResponse> handleMessageNotReadableException(HttpMessageNotReadableException exception) {
+
+        Print.log("Exception "+exception);
+        Print.log("Exception getMessage => "+exception.getMessage());
+        Print.log("Exception getMostSpecificCause => "+exception.getMostSpecificCause());
+        Print.log("Exception getLocalizedMessage => "+exception.getLocalizedMessage());
+        Print.log("Exception getHttpInputMessage => "+exception.getHttpInputMessage());
+        Print.log("Exception getCause => "+exception.getCause());
+        Print.log("Exception fillInStackTrace => "+exception.fillInStackTrace());
+        Print.log("Exception getStackTrace=> "+ Arrays.toString(exception.getStackTrace()));
+
+        ErrorResponse errorResponse = new ErrorResponse(exception.getMessage(), HttpStatus.BAD_REQUEST.value());
         return ResponseHandler.sendResponse(errorResponse);
     }
 }

@@ -16,6 +16,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers("/api/home/**").authenticated()
                                 .requestMatchers("api/auth/register").permitAll()
+                                .requestMatchers("api/auth/create_profile").permitAll()
+                                .requestMatchers("/error?continue").permitAll()
                                 .anyRequest().authenticated()
                         );
         return httpSecurity.build();

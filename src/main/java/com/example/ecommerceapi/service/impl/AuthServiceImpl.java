@@ -3,8 +3,12 @@ package com.example.ecommerceapi.service.impl;
 import com.example.ecommerceapi.model.entites.ApiStatus;
 import com.example.ecommerceapi.model.entites.UserSchema;
 import com.example.ecommerceapi.model.request.auth.CreateAccountRequest;
+import com.example.ecommerceapi.model.request.auth.CreateProfileRequest;
+import com.example.ecommerceapi.model.response.auth.CreateProfileResponse;
 import com.example.ecommerceapi.repositories.AuthRepo;
 import com.example.ecommerceapi.service.AuthService;
+import com.example.ecommerceapi.utils.Print;
+import com.example.ecommerceapi.utils.RandomUtils;
 import com.example.ecommerceapi.utils.apiResponse.ApiResponse;
 import com.example.ecommerceapi.utils.apiResponse.ErrorResponse;
 import com.example.ecommerceapi.utils.apiResponse.MessageResponse;
@@ -20,12 +24,14 @@ import java.util.Date;
 @Service
 public class AuthServiceImpl implements AuthService {
 
-    @Autowired
     AuthRepo authRepo;
-
-    @Autowired
     PasswordEncoder passwordEncoder;
 
+    @Autowired
+    public AuthServiceImpl(AuthRepo authRepo, PasswordEncoder passwordEncoder) {
+        this.authRepo = authRepo;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @Override
     public ApiResponse createAccount(CreateAccountRequest accountRequest) {
@@ -45,5 +51,27 @@ public class AuthServiceImpl implements AuthService {
         user.setApiStatus(apiStatus);
         this.authRepo.save(user);
         return new MessageResponse("User register successfully", HttpStatus.OK.value());
+    }
+
+    @Override
+    public ApiResponse createProfile(CreateProfileRequest profileReq) {
+        boolean isUserAlreadyExist = this.authRepo.findByEmail(profileReq.getEmail()).isPresent();
+
+        if (!isUserAlreadyExist)
+            return new ErrorResponse("User not found",HttpStatus.BAD_REQUEST.value());
+
+       String otp = RandomUtils.generateOTP(6);
+
+        UserSchema userInfo = new UserSchema();
+        userInfo.setFirstName(profileReq.getFirstName());
+        userInfo.setLastName(profileReq.getLastName());
+        userInfo.setDob(profileReq.getDob());
+        userInfo.setCountryCode(profileReq.getCountryCode());
+        userInfo.setMobile(profileReq.getMobile());
+        userInfo.setGender(profileReq.getGender());
+        userInfo.setOtp(otp);
+        userInfo.setUpdatedAt(new Date());
+        this.authRepo.save(userInfo);
+        return new SuccessResponse<>("Otp sent successfully", new CreateProfileResponse(otp), HttpStatus.OK.value());
     }
 }

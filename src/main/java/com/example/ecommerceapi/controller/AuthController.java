@@ -2,15 +2,13 @@ package com.example.ecommerceapi.controller;
 
 import com.example.ecommerceapi.exception.ApiValidationException;
 import com.example.ecommerceapi.model.request.auth.CreateAccountRequest;
+import com.example.ecommerceapi.model.request.auth.CreateProfileRequest;
 import com.example.ecommerceapi.service.AuthService;
 import com.example.ecommerceapi.utils.apiResponse.ApiResponse;
 import com.example.ecommerceapi.utils.apiResponse.ResponseHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import static com.example.ecommerceapi.validation.auth.AuthValidation.isRegisterValid;
 
@@ -32,6 +30,16 @@ public class AuthController {
         isRegisterValid(createAccountRequest);
         ApiResponse createAccountResponse = authService.createAccount(createAccountRequest);
         return ResponseHandler.sendResponse(createAccountResponse);
+    }
+
+
+    @PostMapping("create_profile")
+    public ResponseEntity<ApiResponse> createProfile(
+            @RequestBody CreateProfileRequest profileRequest
+    ) throws ApiValidationException {
+
+        ApiResponse createProfileResponse = authService.createProfile(profileRequest);
+        return ResponseHandler.sendResponse(createProfileResponse);
     }
 
 
