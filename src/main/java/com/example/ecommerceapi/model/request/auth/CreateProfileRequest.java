@@ -25,29 +25,4 @@ public class CreateProfileRequest {
     private String email;
     private Gender gender;
     private Date updatedAt;
-
-    public void setUpdatedAt(Date updatedAt) throws ApiValidationException {
-        // Custom validation logic for the updatedAt field
-        if (updatedAt == null) {
-            this.updatedAt = null;
-        } else if (isValidDate(updatedAt)) {
-            this.updatedAt = updatedAt;
-        } else {
-            // Throw a custom exception with an error message
-            throw new ApiValidationException("Invalid date format for updatedAt");
-        }
-    }
-
-    // Helper method to check if a Date is valid
-    private boolean isValidDate(Date date) {
-
-        try {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            dateFormat.setLenient(false);
-            dateFormat.parse(date.toString());
-            return true;
-        } catch (ParseException e) {
-            return false;
-        }
-    }
 }

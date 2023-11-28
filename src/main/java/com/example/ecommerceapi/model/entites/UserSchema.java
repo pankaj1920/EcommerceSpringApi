@@ -2,6 +2,9 @@ package com.example.ecommerceapi.model.entites;
 
 import com.example.ecommerceapi.model.other.Gender;
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -26,6 +29,7 @@ public class UserSchema {
     private int countryCode;
 
     @Column(name = "mobile")
+
     private int mobile;
 
     @Enumerated(EnumType.STRING)

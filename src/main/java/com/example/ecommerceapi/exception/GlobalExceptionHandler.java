@@ -53,13 +53,16 @@ public class GlobalExceptionHandler {
         Print.log("Exception "+exception);
         Print.log("Exception getMessage => "+exception.getMessage());
         Print.log("Exception getMostSpecificCause => "+exception.getMostSpecificCause());
+        Print.log("Exception getMostSpecificCause Message => "+exception.getMostSpecificCause().getMessage());
         Print.log("Exception getLocalizedMessage => "+exception.getLocalizedMessage());
         Print.log("Exception getHttpInputMessage => "+exception.getHttpInputMessage());
         Print.log("Exception getCause => "+exception.getCause());
-        Print.log("Exception fillInStackTrace => "+exception.fillInStackTrace());
+        Print.log("Exception getCause message=> "+exception.getCause().getMessage());
+        Print.log("Exception fillInStackTrace => "+exception.fillInStackTrace().getMessage());
         Print.log("Exception getStackTrace=> "+ Arrays.toString(exception.getStackTrace()));
 
-        ErrorResponse errorResponse = new ErrorResponse(exception.getMessage(), HttpStatus.BAD_REQUEST.value());
+        ErrorResponse errorResponse = new ErrorResponse(exception.getMostSpecificCause().getMessage()
+                , HttpStatus.BAD_REQUEST.value());
         return ResponseHandler.sendResponse(errorResponse);
     }
 }
